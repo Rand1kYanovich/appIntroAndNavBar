@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.bottomandappintro.databinding.TestLayoutBinding;
 
@@ -17,6 +18,9 @@ public class FragmentExample extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         TestLayoutBinding binding = DataBindingUtil.setContentView(this, R.layout.fragment_activity);
+
+
+
     }
 
     @Override
@@ -27,8 +31,10 @@ public class FragmentExample extends AppCompatActivity {
             for (Fragment f : fragments) {
                 if (f instanceof ImagePickerFragment) {
                     f.onActivityResult(requestCode, resultCode, data);
+
                 }
             }
         }
+
     }
 }

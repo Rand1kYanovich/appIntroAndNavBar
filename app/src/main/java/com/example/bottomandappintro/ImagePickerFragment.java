@@ -1,26 +1,27 @@
 package com.example.bottomandappintro;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
-import com.myhexaville.smartimagepicker.ImagePicker;
-import com.example.bottomandappintro.databinding.TestLayoutBinding;
-
-import java.io.File;
+import static android.app.Activity.RESULT_OK;
 
 
 public class ImagePickerFragment extends Fragment {
 
-    private ImagePicker imagePicker;
-    private TestLayoutBinding binding;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
     private ImageView imageView;
+    private Button button;
+    private Uri imageUri;
 
     public ImagePickerFragment() {
         // Required empty public constructor
@@ -29,57 +30,37 @@ public class ImagePickerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.test_layout, container, false);
+       View rootView = inflater.inflate(R.layout.test_layout, container, false);
 
-        binding.openCamera.setOnClickListener(v -> openCamera());
-        binding.showAll.setOnClickListener(v -> showAll());
-        binding.showGallery.setOnClickListener(v -> chooseFromGallery());
-        imageView = (ImageView)binding.getRoot().findViewById(R.id.image);
-        File file = imagePicker.getImageFile();
-        
+       imageView = (ImageView)rootView.findViewById(R.id.image);
+       button = (Button)rootView.findViewById(R.id.showAll);
 
-        return binding.getRoot();
+       button.setOnClickListener(new View.OnClickListener(){
+
+           @Override
+           public void onClick(View v) {
+               openGallery();
+           }
+       });
+
+       return rootView;
+
+
+    }
+
+
+    private void openGallery() {
+        Intent gallery  = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(gallery,100);
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        imagePicker.handleActivityResult(resultCode, requestCode, data);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        imagePicker.handlePermission(requestCode, grantResults);
-    }
-
-    public void showAll() {
-        refreshImagePicker();
-        imagePicker.choosePicture(true);
-    }
-
-    public void chooseFromGallery() {
-        refreshImagePicker();
-        imagePicker.choosePicture(false);
-    }
-
-    public void openCamera() {
-        refreshImagePicker();
-        imagePicker.openCamera();
-    }
-
-    private void refreshImagePicker() {
-        imagePicker = new ImagePicker(getActivity(),
-                this,
-                imageUri -> {
-                    binding.image.setImageURI(imageUri);
-                });
-        if (binding.withCrop.isChecked()) {
-            imagePicker.setWithImageCrop(
-                    Integer.parseInt(binding.aspectRatioX.getText().toString()),
-                    Integer.parseInt(binding.aspectRatioY.getText().toString())
-            );
+        if(resultCode == RESULT_OK && requestCode == 100){
+            imageUri = data.getData();
+            imageView.setImageURI(imageUri);
         }
     }
-
 }
