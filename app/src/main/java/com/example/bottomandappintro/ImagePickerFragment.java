@@ -8,15 +8,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.myhexaville.smartimagepicker.ImagePicker;
 import com.example.bottomandappintro.databinding.TestLayoutBinding;
+
+import java.io.File;
 
 
 public class ImagePickerFragment extends Fragment {
 
     private ImagePicker imagePicker;
     private TestLayoutBinding binding;
+    private ImageView imageView;
 
     public ImagePickerFragment() {
         // Required empty public constructor
@@ -30,6 +34,9 @@ public class ImagePickerFragment extends Fragment {
         binding.openCamera.setOnClickListener(v -> openCamera());
         binding.showAll.setOnClickListener(v -> showAll());
         binding.showGallery.setOnClickListener(v -> chooseFromGallery());
+        imageView = (ImageView)binding.getRoot().findViewById(R.id.image);
+        File file = imagePicker.getImageFile();
+        
 
         return binding.getRoot();
     }
