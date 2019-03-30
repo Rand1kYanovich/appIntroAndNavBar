@@ -1,6 +1,5 @@
 package com.example.bottomandappintro;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
 
 
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
 
             case R.id.navigation_back:
-                fragment = new AddPhotoFragment();
+                fragment = new ImagePickerFragment();
                 break;
         }
 
