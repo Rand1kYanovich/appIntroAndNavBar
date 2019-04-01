@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
 
             case R.id.navigation_android:
-                fragment = new AddPhotoFragment();
+                fragment = new MapFragment();
                 break;
 
             case R.id.navigation_back:
